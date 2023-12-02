@@ -10,7 +10,6 @@
 #include <string>
 using namespace std;
 
-
 //quick note on how to read documentation! (just in case I am doing it weird and you guys learned a better way to do it)
 /**
 * The first line is meant to explain the purpose of a function
@@ -22,14 +21,17 @@ using namespace std;
 */
 
 
-//These functions are based on what we talked about previously so feel free
-// to change it up if you find a better way to implement any of this!
-
 
 class Calculator
 {
 private:
 	string expression;
+
+	/**
+	* Removes potential white spaces to the given function and sets result as 
+	* new expression.
+	*/
+	void removeSpaces();
 
 	/**
 	* Converts a given character into a double
@@ -46,6 +48,25 @@ private:
 	* @pre The character passed into this method must be an operator.
 	*/
 	int precedenceHelper(char op);
+	
+	/*
+	* Determines the precendence between two given operators.
+	* @param a The first operator
+	* @param b The second operator
+	* #return true if the first operator is of equal or lesser precendence than
+	* the second given operator, false if otherwise.
+	*/
+	bool comparePrecendence(char op1, char op2);
+
+	/*
+	*Calculates the character type of the given character.
+	* @param ch The character whose type is being evaluated
+	* @returns n if the character was an integer between 0-9.
+	* @returns o if the character was a paranthesis
+	* @pre The given characteres must meet the criteria of the above character
+	* types
+	*/
+	char sortType(char ch);
 
 	/**
 	* Converts a stored user submitted expression into a postfix expresstion with the 
@@ -56,13 +77,15 @@ private:
 	*/
 	string precedence();
 
+	
+
 	/**
 	* Adds the two given numbers together
 	* @param a A number to be added
 	* @param b A number to be added
 	* @return The sum of the two numbers
 	*/
-	double add(char a, char b);
+	double add(double a, double b);
 
 	/**
 	* Subtracts the two given numbers
@@ -70,7 +93,7 @@ private:
 	* @param b The number to be subtracted
 	* @return The difference of the two numbers
 	*/
-	double subtract(char a, char b);
+	double subtract(double a, double b);
 
 	/**
 	* Divides the two given numbers from eachother
@@ -78,7 +101,7 @@ private:
 	* @param b The number used to divide
 	* @return The quotient of the two numbers
 	*/
-	double divide(char a, char b);
+	double divide(double a, double b);
 
 	/**
 	* Multiplies the two given numbers together
@@ -86,7 +109,7 @@ private:
 	* @param b A number to be multiplied
 	* @return The product of the two numbers
 	*/
-	double multiply(char a, char b);
+	double multiply(double a, double b);
 
 	/**
 	* Produces the remainder for the two given numbers
@@ -95,7 +118,15 @@ private:
 	* @return The remainder of the division between the two numbers
 	* @pre The remainder of two numbers will always be an whole number
 	*/
-	double modulus(char a, char b);
+	double modulus(double a, double b);
+
+	/**
+	* Produces the exponent of a^b
+	* @param a The base number 
+	* @param b The power that the number will be raised by.
+	* @return The product of the exponent
+	*/
+	double exponent(double a, double b);
 
 
 public:
@@ -119,6 +150,3 @@ public:
 
 };//end class Calculator
 
-
-
-#endif
