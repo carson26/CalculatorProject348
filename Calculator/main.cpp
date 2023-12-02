@@ -14,24 +14,27 @@ using namespace std;
 
 int main()
 {
-    // Here is where the user interface will be implemented for the most part!
-
+    
+    //User interface that takes an input from the user
     string expression;
-    cout << "--------Calculator---------\n" << endl;
-    cout << "Please Enter a mathematical expression or TYPE 0 to EXIT" << endl;
+    cout << "--------348_Calculator_Project---------\n" << endl;
+    cout << "Please enter your mathematical expression or TYPE 0 to EXIT" << endl;
 
     cin >> expression;
 
     if (expression == "0")
     {
         //end program
+        return 0;
     }
     else
     {
+        //Take given User expression and put it into our calc class
         Calculator calc(expression);
         double result = calc.calculate();
 
-        cout << "Result:" << result << endl;
+        //Return the result to the user ending main 
+        cout << "Result = " << result << endl;
 
     }
 
