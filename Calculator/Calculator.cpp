@@ -5,11 +5,12 @@
 */
 
 #include "Calculator.h"
+#include <iostream>
 #include <string>
 #include <stack> // library with stack class
 #include <stdexcept> //library for error handling
 #include <algorithm> //library with a bunch of simple algorthims, might come in handy idk
-
+#include <cmath>
 
 
 using namespace std;
@@ -54,7 +55,7 @@ void Calculator::removeSpaces()
 
 double Calculator::convertHelper(char n)
 {
-	double num = 0.0;
+	double num;
 
 	//Turns the given character into string in order to use stod()
 	string temp = "";
@@ -135,67 +136,67 @@ char Calculator::sortType(char ch)
 
 string Calculator::precedence()
 {
-	string postFixExp = "";
-	removeSpaces();
+    string postFixExp = "";
+    removeSpaces();
 
-	string exp = get();
+    string exp = get();
 
-	int expLength = exp.length();
-	char ch = ' ';
+    int expLength = exp.length();
+    char ch = ' ';
 
-	stack <char> aStack;
+    stack<char> aStack;
 
-	for (int i = 0; i < expLength; i++)
-	{
-		ch = exp[i]; //I dont know what this does come back to this -------------------------------------------------------------------------
+    for (int i = 0; i < expLength; i++)
+    {
+        ch = exp[i]; //I dont know what this does come back to this -------------------------------------------------------------------------
 
-		switch (sortType(ch))
-		{
-		case 'n':
-		{
-			//Appends number to postFixExp
-			postFixExp += ch;
-			break;
-		}
-		case '(':
-		{
-			aStack.push(ch);
-			break;
-		}
-		case 'o':
-		{
-			while (!aStack.empty() && aStack.top() != '(' &&
-				comparePrecendence(ch, aStack.top()))
-			{
-				//Append top of stack to PostFixExp
-				postFixExp += (aStack.top());
-				aStack.pop();
-			}//end while
+        switch (sortType(ch))
+        {
+        case 'n':
+        {
+            //Appends number to postFixExp
+            postFixExp += ch;
+            break;
+        }
+        case '(':
+        {
+            aStack.push(ch);
+            break;
+        }
+        case 'o':
+        {
+            while (!aStack.empty() && aStack.top() != '(' &&
+                   comparePrecendence(ch, aStack.top()))
+            {
+                //Append top of stack to PostFixExp
+                postFixExp += (aStack.top());
+                aStack.pop();
+            } //end while
 
-			aStack.push(ch);
-			break;
-		}
-		case ')':
-			while (aStack.top() != '(')
-			{
-				postFixExp += aStack.top();
-				aStack.pop();//------------------------------------------------------------------------------------------------------
-			}
+            aStack.push(ch);
+            break;
+        }
+        case ')':
+            while (aStack.top() != '(')
+            {
+                postFixExp += aStack.top();
+                aStack.pop(); //--------------------------------------------------------------------------------------
+            }
 
-			aStack.pop();
-			break;
+            aStack.pop();
+            break;
+        } //end switch
+    }     // end for
 
-		}//end switch
+    while (!aStack.empty())
+    {
+        postFixExp += (aStack.top());
+        aStack.pop();
+    }
+    
+    return postFixExp;
+} //end precedence
 
-		while (!aStack.empty())
-		{
-			postFixExp += (aStack.top());
-			aStack.pop();
-		}
-		return postFixExp;
-
-	}
-}//end precedence
 
 double Calculator::add( double a, double b)
 {
@@ -209,16 +210,17 @@ double Calculator::subtract(double a, double b)
 
 double Calculator::divide(double a, double b)
 {
-	double result = 0;
-	if (b == 0)
-	{
-		throw runtime_error("There was an attempt to divide by 0.");
-	}
-	else
-	{
-		result = a / b;
-	}
-}//end divide
+    double result = 0.0;
+    if (b == 0)
+    {
+        throw runtime_error("There was an attempt to divide by 0.");
+    }
+    else
+    {
+        result = a / b;
+    }
+    return result;
+}
 
 double Calculator::multiply(double a, double b)
 {
@@ -255,7 +257,6 @@ double Calculator::calculate()
 	{
 		ch = exp[i];
 
-
 		if (sortType(ch) == 'n')
 		{
 			double num = convertHelper(ch);
@@ -263,64 +264,50 @@ double Calculator::calculate()
 		}
 		else
 		{
-
 			double op2 = evalStack.top();
 			evalStack.pop();
-			
-			// if stack is empty , there are not enough operators
 
-			double op1 = evalStack.top();
-			evalStack.pop();
+			// If stack is not empty, retrieve op1
+			if (!evalStack.empty()) {
+				double op1 = evalStack.top();
+				evalStack.pop();
 
-			switch (ch)
-			{
-			case'+':
-			{
-				result = add(op1, op2);
-				break;
+				switch (ch)
+				{
+				case '+':
+					result = add(op1, op2);
+					break;
+				case '-':
+					result = subtract(op1, op2);
+					break;
+				case '*':
+					result = multiply(op1, op2);
+					break;
+				case '/':
+					result = divide(op1, op2);
+					break;
+				case '%':
+					result = modulus(op1, op2);
+					break;
+				case '^':
+					result = exponent(op1, op2);
+					break;
+				}//end switch
 
+				// Place result on stack
+				evalStack.push(result);
 			}
-			case '-':
+			else
 			{
-				result = subtract(op1, op2);
-				break;
+				// Handle the case where there are not enough operators on the stack
+				cout << "Error: Insufficient operators for calculation." << endl;
+				// You may choose to throw an exception or handle this error appropriately
+				// For now, the result remains 0
+				return result;
+				//evalStack.push(0);  // Placeholder value, adjust as needed
 			}
-			case '*':
-			{
-				result = multiply(op1, op2);
-				break;
-			}
-			case '/':
-			{
-				result = divide(op1, op2);
-				break;
-			}
-			case '%':
-			{
-				result = modulus(op1, op2);
-				break;
-			}
-			case '^':
-			{
-				result = exponent(op1, op2);
-				break;
-			}
-
-			}//end switch
-
-			//place result on stack
-			evalStack.push(result);
-
 		}
-
 	}
 
 	return result;
 }//end calculate
-
-
-
-
-
-
-
