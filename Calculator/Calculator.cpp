@@ -1,5 +1,5 @@
 /**
-* Names here:
+* Names here: Carson Abbott, Owen Deines, Brisa Andrade, Jordan Mcdaniels, Jaret Priddy, Connor Schroeder
 *  Calculator348 Project
 * Calculator.cpp
 */
@@ -213,7 +213,7 @@ double Calculator::divide(double a, double b)
     double result = 0.0;
     if (b == 0)
     {
-        throw runtime_error("There was an attempt to divide by 0.");
+        throw 100;
     }
     else
     {
