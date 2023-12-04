@@ -1,5 +1,5 @@
 /**
-* Names here:
+* Names here: Carson Abbott, Owen Deines, Brisa Andrade, Jordan Mcdaniels, Jaret Priddy, Connor Schroeder
 * Calculator348 Project
 * main.cpp
 */
@@ -33,11 +33,22 @@ int main()
         {
             // Take the given user expression and put it into our calc class
             Calculator calc(expression);
-            double result = calc.calculate();
-
-            // Return the result to the user
-            cout << "Result = " << result << endl;
-        }
+            try {
+                // Try to calculate the expression
+                double result = calc.calculate();
+                // Return the result to the user if no errors were thrown
+                cout << "Result = " << result << endl;
+            }
+            catch (int errorCode) {
+                // If an error is thrown (ie. 'throw 100;'), 100 will be caught as the error code
+                cout << "Error Code: " << errorCode << endl;
+                // Put any more possible errorCodes inside this switch case statement
+                switch (errorCode) {
+                    case 100:
+                        cout << "\tZero Division Error" << endl;
+                        break;
+                }
+            }
     }
 
     return 0; // End the program
