@@ -164,7 +164,7 @@ string Calculator::precedence()
 				string temp = " ";
 				int j = i;
 
-				while (sortType(exp[j]) == 'n')
+				while (sortType(exp[j]) == 'n'&& j < exp.length())
 				{
 					temp += exp[j];
 					j++;
@@ -285,14 +285,14 @@ double Calculator::calculate()
 	{
 		ch = exp[i];
 
-		if (sortType(ch) == 'x')
+		if (ch == 'x')
 		{
 			int j = i+1;
 
 			string temp = " ";
 
 	
-			while (sortType(exp[j]) != 'x')
+			while (exp[j] != 'x' && j < exp.length())
 			{
 				temp += exp[j];
 				j++;
@@ -305,6 +305,7 @@ double Calculator::calculate()
 		}
 		else
 		{
+			
 			double op2 = evalStack.top();
 			evalStack.pop();
 
