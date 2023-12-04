@@ -25,7 +25,7 @@ Calculator::Calculator(string exp)
 	expression = exp;
 }//end constructor
 
-void Calculator:: set(string newExp)
+void Calculator::set(string newExp)
 {
 	expression = newExp;
 }//end set
@@ -43,7 +43,7 @@ void Calculator::removeSpaces()
 
 	//Calculates the number of white spaces in the given expression
 
-	spaceCount = count(exp.begin(), exp.end(),' ');
+	spaceCount = count(exp.begin(), exp.end(), ' ');
 
 	if (spaceCount > 0)
 	{
@@ -53,16 +53,12 @@ void Calculator::removeSpaces()
 	}
 }//end removeSpaces
 
-double Calculator::convertHelper(char n)
+double Calculator::convertHelper(string n)
 {
 	double num;
 
-	//Turns the given character into string in order to use stod()
-	string temp = "";
-	temp += n;
-	
 	//stod() converts string into a double
-	num = stod(temp);
+	num = stod(n);
 	return num;
 
 
@@ -103,13 +99,13 @@ bool Calculator::comparePrecendence(char op1, char op2)
 	{
 		precendence = true;
 	}
-	
+
 	return precendence;
 
 }//end comparePrecendence 
 
 
-char Calculator::sortType(char ch) 
+char Calculator::sortType(char ch)
 {
 	char type = ' ';
 
@@ -136,69 +132,101 @@ char Calculator::sortType(char ch)
 
 string Calculator::precedence()
 {
-    string postFixExp = "";
-    removeSpaces();
+	string postFixExp = "";
+	removeSpaces();
 
-    string exp = get();
+	string exp = get();
 
-    int expLength = exp.length();
-    char ch = ' ';
+	int expLength = exp.length();
+	char ch = ' ';
 
-    stack<char> aStack;
+	stack <char> aStack;
 
-    for (int i = 0; i < expLength; i++)
-    {
-        ch = exp[i]; //I dont know what this does come back to this -------------------------------------------------------------------------
+	for (int i = 0; i < expLength; i++)
+	{
+		ch = exp[i]; 
 
-        switch (sortType(ch))
-        {
-        case 'n':
-        {
-            //Appends number to postFixExp
-            postFixExp += ch;
-            break;
-        }
-        case '(':
-        {
-            aStack.push(ch);
-            break;
-        }
-        case 'o':
-        {
-            while (!aStack.empty() && aStack.top() != '(' &&
-                   comparePrecendence(ch, aStack.top()))
-            {
-                //Append top of stack to PostFixExp
-                postFixExp += (aStack.top());
-                aStack.pop();
-            } //end while
+		switch (sortType(ch))
+		{
+		case 'n':
+		{	
+			// number is surrounded in x in order to differentiate single digits vs. double digits
 
-            aStack.push(ch);
-            break;
-        }
-        case ')':
-            while (aStack.top() != '(')
-            {
-                postFixExp += aStack.top();
-                aStack.pop(); //--------------------------------------------------------------------------------------
-            }
+			if (sortType(exp[i + 1]) != 'n')
+			{
+				postFixExp += 'x';
+				postFixExp += ch;
+				postFixExp += 'x';
+			}
+			else
+			{
+				
+				string temp = " ";
+				int j = i;
 
-            aStack.pop();
-            break;
-        } //end switch
-    }     // end for
+				while (sortType(exp[j]) == 'n')
+				{
+					temp += exp[j];
+					j++;
+				}// end while
 
-    while (!aStack.empty())
-    {
-        postFixExp += (aStack.top());
-        aStack.pop();
-    }
-    
-    return postFixExp;
+			
+				postFixExp += 'x';
+
+				for (int k = 0; k <temp.length(); k++)
+				{
+					// whole digit is added to stack
+					postFixExp += exp[k];
+				}
+
+				postFixExp += 'x';
+
+				i = j - 1;
+			}
+
+			break;
+		}
+		case '(':
+		{
+			aStack.push(ch);
+			break;
+		}
+		case 'o':
+		{
+			while (!aStack.empty() && aStack.top() != '(' &&
+				comparePrecendence(ch, aStack.top()))
+			{
+				//Append top of stack to PostFixExp
+				postFixExp += (aStack.top());
+				aStack.pop();
+			} //end while
+
+			aStack.push(ch);
+			break;
+		}
+		case ')':
+			while (aStack.top() != '(')
+			{
+				postFixExp += aStack.top();
+				aStack.pop(); 
+			}
+
+			aStack.pop();
+			break;
+		} //end switch
+	}     // end for
+
+	while (!aStack.empty())
+	{
+		postFixExp += (aStack.top());
+		aStack.pop();
+	}
+
+	return postFixExp;
 } //end precedence
 
 
-double Calculator::add( double a, double b)
+double Calculator::add(double a, double b)
 {
 	return a + b;
 }//end add
@@ -210,16 +238,16 @@ double Calculator::subtract(double a, double b)
 
 double Calculator::divide(double a, double b)
 {
-    double result = 0.0;
-    if (b == 0)
-    {
-        throw 100;
-    }
-    else
-    {
-        result = a / b;
-    }
-    return result;
+	double result = 0.0;
+	if (b == 0)
+	{
+		throw 100;
+	}
+	else
+	{
+		result = a / b;
+	}
+	return result;
 }
 
 double Calculator::multiply(double a, double b)
@@ -257,9 +285,22 @@ double Calculator::calculate()
 	{
 		ch = exp[i];
 
-		if (sortType(ch) == 'n')
+		if (sortType(ch) == 'x')
 		{
-			double num = convertHelper(ch);
+			int j = i+1;
+
+			string temp = " ";
+
+	
+			while (sortType(exp[j]) != 'x')
+			{
+				temp += exp[j];
+				j++;
+			}
+
+			i = j;
+
+			double num = convertHelper(temp);
 			evalStack.push(num);
 		}
 		else
