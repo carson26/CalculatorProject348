@@ -152,6 +152,7 @@ string Calculator::precedence()
 		{	
 			// number is surrounded in x in order to differentiate single digits vs. double digits
 
+			
 			if (sortType(exp[i + 1]) != 'n')
 			{
 				postFixExp += 'x';
@@ -164,10 +165,14 @@ string Calculator::precedence()
 				string temp = " ";
 				int j = i;
 
-				while (sortType(exp[j]) == 'n'&& j < exp.length())
+			
+				while (sortType(exp[j]) == 'n' && j < exp.length())
 				{
-					temp += exp[j];
-					j++;
+
+						temp += exp[j];
+						j++;
+					
+					
 				}// end while
 
 			
