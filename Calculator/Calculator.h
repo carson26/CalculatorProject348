@@ -28,7 +28,7 @@ private:
 	string expression;
 
 	/**
-	* Removes potential white spaces to the given function and sets result as 
+	* Removes potential white spaces to the given function and sets result as
 	* new expression.
 	*/
 	void removeSpaces();
@@ -39,7 +39,7 @@ private:
 	* @return Double equivalent of the converted character
 	* @pre The given character must be a number.
 	*/
-	double convertHelper(char n);
+	double convertHelper(string n);
 
 	/**
 	* Calculates the precendence of the given operator.
@@ -48,7 +48,7 @@ private:
 	* @pre The character passed into this method must be an operator.
 	*/
 	int precedenceHelper(char op);
-	
+
 	/*
 	* Determines the precendence between two given operators.
 	* @param a The first operator
@@ -69,7 +69,7 @@ private:
 	char sortType(char ch);
 
 	/**
-	* Converts a stored user submitted expression into a postfix expresstion with the 
+	* Converts a stored user submitted expression into a postfix expresstion with the
 	* use of a stack.
 	* @return The calculated postfix expresssion
 	* @pre All sumbmitted expresssions are written properly
@@ -77,7 +77,7 @@ private:
 	*/
 	string precedence();
 
-	
+
 
 	/**
 	* Adds the two given numbers together
@@ -122,7 +122,7 @@ private:
 
 	/**
 	* Produces the exponent of a^b
-	* @param a The base number 
+	* @param a The base number
 	* @param b The power that the number will be raised by.
 	* @return The product of the exponent
 	*/
@@ -140,7 +140,7 @@ public:
 	string get(); //gets expression
 
 	/**
-	* Converts the stored expression to a postfix expression and then evaluates it 
+	* Converts the stored expression to a postfix expression and then evaluates it
 	* using a stack.
 	* @return The evaluated resul of the postfix expression.
 	*/
