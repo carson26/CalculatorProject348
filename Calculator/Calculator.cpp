@@ -176,7 +176,7 @@ string Calculator::precedence()
 				for (int k = 0; k <temp.length(); k++)
 				{
 					// whole digit is added to stack
-					postFixExp += exp[k];
+					postFixExp += temp[k];
 				}
 
 				postFixExp += 'x';
