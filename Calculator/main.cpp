@@ -49,7 +49,7 @@ int main()
                         break;
                 }
             }
+        }
     }
-
     return 0; // End the program
 }
